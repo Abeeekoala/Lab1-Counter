@@ -24,15 +24,15 @@ int main(int argc, char **argv, char **env){
     top->clk = 1;
     top->rst = 1;
     top->en = 0;
-    int pause = 0;
+    // int pause = 0;
     //run simulation for many clock cycles
     for (i=0; i<300; i++){
-        if (top->count == 9 && pause < 3){
-            pause++;
-        }
-        else{
-            pause = 0;
-        }
+        // if (top->count == 9 && pause < 3){
+        //     pause++;
+        // }
+        // else{
+        //     pause = 0;
+        // }
         //dump variables into VCD file and toggle clock
         for (clk=0; clk<2; clk++){
             tfp->dump (2*i+clk);
@@ -45,10 +45,19 @@ int main(int argc, char **argv, char **env){
         vbdHex(3, (int(top->count)>>8) & 0xF);
         vbdHex(2, (int(top->count)>>4) & 0xF);
         vbdHex(1, int(top->count) & 0xF);
+        
+        // vbdPlot(int(top->count), 0, 255);
+        
         vbdCycle(i+1);
         //change input stimuli
         top->rst = (i <2) | (i == 15);
-        top->en = (i>4) && !(top->count == 9 && pause < 3);
+        // top->en = (i>4) && !(top->count == 9 && pause < 3);
+
+        top->en = vbdFlag();
+        // This work with original counter
+        // if (vbdFlag()) top->en = 1;
+        // else top->en = 0xFF;
+        
         if (Verilated::gotFinish()) exit(0);
     }
     vbdClose(); // ++++
