@@ -26,7 +26,7 @@ int main(int argc, char **argv, char **env){
     top->ld = 0;
     
     for (i=0; i<300; i++){
-        top->v = vbdValue();
+        // top->v = vbdValue(); for load counter
         if (top->ld) top->ld = 0;
         top->ld = vbdFlag();
 
@@ -37,12 +37,12 @@ int main(int argc, char **argv, char **env){
         }
         
         // ++++ Send count value to Vbuddy
-        // vbdHex(4, (int(top->count)>>16) & 0xF);
-        // vbdHex(3, (int(top->count)>>8) & 0xF);
-        // vbdHex(2, (int(top->count)>>4) & 0xF);
-        // vbdHex(1, int(top->count) & 0xF);
+        vbdHex(4, (int(top->count)>>16) & 0xF);
+        vbdHex(3, (int(top->count)>>8) & 0xF);
+        vbdHex(2, (int(top->count)>>4) & 0xF);
+        vbdHex(1, int(top->count) & 0xF);
         
-        vbdPlot(int(top->count), 0, 255);
+        // vbdPlot(int(top->count), 0, 255);
         
         vbdCycle(i+1);
         //change input stimuli
